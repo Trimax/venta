@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Safe connection class definition
  **/
-public class SafeConnection implements IConnection {
+public final class SafeConnection implements IConnection {
     /* Real connection */
     private Connection m_Connection;
 

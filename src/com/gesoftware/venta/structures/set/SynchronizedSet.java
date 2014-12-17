@@ -111,4 +111,25 @@ public final class SynchronizedSet<E> implements Set<E>, Serializable {
             m_Set.clear();
         }
     } /* End of 'SynchronizedSet::clear' method */
+
+    @Override
+    public final int hashCode() {
+        synchronized (m_Set) {
+            return m_Set.hashCode();
+        }
+    } /* End of 'SynchronizedSet::hashCode' method */
+
+    @Override
+    public final boolean equals(final Object obj) {
+        synchronized (m_Set) {
+            return obj instanceof SynchronizedSet && m_Set.equals(obj);
+        }
+    } /* End of 'SynchronizedSet::equals' method */
+
+    @Override
+    public final String toString() {
+        synchronized (m_Set) {
+            return m_Set.toString();
+        }
+    } /* End of 'SynchronizedSet::toString' method */
 } /* End of 'SynchronizedSet' class */

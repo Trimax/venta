@@ -11,7 +11,7 @@ public final class Incident {
     /* *
      * METHOD: Generates uniformly distributed value and compares it with given probability
      * RETURN: True if incident is happen, false otherwise
-     *  PARAM: [IN] probability - incident's probability
+     *  PARAM: [IN] probability - incident's probability (%)
      * AUTHOR: Eliseev Dmitry
      * */
     public final boolean isHappen(final double probability) {

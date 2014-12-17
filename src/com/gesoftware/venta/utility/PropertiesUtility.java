@@ -21,7 +21,7 @@ public final class PropertiesUtility {
     public PropertiesUtility(final String configurationFile) {
         try {
             properties.load(new FileInputStream(configurationFile));
-        } catch (IOException ignored) {
+        } catch (final IOException ignored) {
             LoggingUtility.core("Can't load " + configurationFile + " file");
         }
     } /* End of 'PropertiesUtility::PropertiesUtility' method */
@@ -61,7 +61,7 @@ public final class PropertiesUtility {
     public final Integer getPropertyAsInt(final String property) {
         try {
             return Integer.parseInt(getPropertyAsString(property));
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LoggingUtility.core("Can't parse property " + property + " as integer value: " + e.getMessage());
         }
 
@@ -78,7 +78,7 @@ public final class PropertiesUtility {
     public final Boolean getPropertyAsBoolean(final String property) {
         try {
             return Boolean.parseBoolean(getPropertyAsString(property));
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LoggingUtility.core("Can't parse property " + property + " as boolean value: " + e.getMessage());
         }
 

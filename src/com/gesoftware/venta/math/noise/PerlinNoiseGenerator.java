@@ -1,5 +1,6 @@
 package com.gesoftware.venta.math.noise;
 
+import com.gesoftware.venta.logging.LoggingUtility;
 import com.gesoftware.venta.math.interpolation.Interpolator;
 
 import java.util.Random;

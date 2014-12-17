@@ -143,4 +143,25 @@ public final class SynchronizedQueue<T> implements Queue<T>, Serializable {
             return m_Items.peek();
         }
     } /* End of 'SynchronizedQueue::peek' method */
+
+    @Override
+    public final int hashCode() {
+        synchronized (m_Items) {
+            return m_Items.hashCode();
+        }
+    } /* End of 'SynchronizedQueue::hashCode' method */
+
+    @Override
+    public final boolean equals(final Object obj) {
+        synchronized (m_Items) {
+            return obj instanceof SynchronizedQueue && m_Items.equals(obj);
+        }
+    } /* End of 'SynchronizedQueue::equals' method */
+
+    @Override
+    public final String toString() {
+        synchronized (m_Items) {
+            return m_Items.toString();
+        }
+    } /* End of 'SynchronizedQueue::toString' method */
 } /* End of 'SynchronizedQueue' class */

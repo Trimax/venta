@@ -1,7 +1,7 @@
 package com.gesoftware.venta.math.trees;
 
 import com.gesoftware.venta.logging.LoggingUtility;
-import com.gesoftware.venta.math.shapes.Rectangle;
+import com.gesoftware.venta.math.shapes.Box2r;
 import com.gesoftware.venta.math.vectors.Vec2i;
 
 import javax.swing.*;
@@ -15,20 +15,20 @@ public final class QuadTreeTest extends JFrame {
     private final static int c_Side = 20;
 
     private class Demo extends Panel {
-        private final QuadTree<Rectangle> m_Tree;
-        private final Rectangle m_Test;
+        private final QuadTree<Box2r> m_Tree;
+        private final Box2r m_Test;
 
-        public Demo(final QuadTree<Rectangle> tree, final Rectangle test) {
+        public Demo(final QuadTree<Box2r> tree, final Box2r test) {
             m_Tree = tree;
             m_Test = test;
         }
 
-        private void paintRectangle(final Graphics g, final Rectangle rectangle) {
+        private void paintRectangle(final Graphics g, final Box2r rectangle) {
             g.fillRect((int)rectangle.getPosition().getX(), (int)rectangle.getPosition().getY(), (int)rectangle.getSize().getX(), (int)rectangle.getSize().getY());
         }
 
-        private void paintList(final Graphics g, final List<Rectangle> rectangles) {
-            for (final Rectangle rectangle : rectangles)
+        private void paintList(final Graphics g, final List<Box2r> rectangles) {
+            for (final Box2r rectangle : rectangles)
                 paintRectangle(g, rectangle);
         }
 
@@ -58,13 +58,13 @@ public final class QuadTreeTest extends JFrame {
         setTitle("Quad-tree test");
 
         /* Create tree and fill it with random objects */
-        final Rectangle area = new Rectangle(0, 0, c_Size.getX(), c_Size.getY());
-        final QuadTree<Rectangle> tree = new QuadTree<Rectangle>(area);
+        final Box2r area = new Box2r(0, 0, c_Size.getX(), c_Size.getY());
+        final QuadTree<Box2r> tree = new QuadTree<Box2r>(area);
         for (int i = 0; i < 100; i++)
-            tree.insert(new Rectangle(c_Random.nextInt(c_Size.getX()), c_Random.nextInt(c_Size.getY()), c_Side, c_Side));
+            tree.insert(new Box2r(c_Random.nextInt(c_Size.getX()), c_Random.nextInt(c_Size.getY()), c_Side, c_Side));
 
         /* Generate random test area */
-        final Rectangle test = new Rectangle(c_Random.nextInt(c_Size.getX()), c_Random.nextInt(c_Size.getY()), 3 * c_Side, 3 * c_Side);
+        final Box2r test = new Box2r(c_Random.nextInt(c_Size.getX()), c_Random.nextInt(c_Size.getY()), 3 * c_Side, 3 * c_Side);
 
         /* Set demo panel */
         getContentPane().add(new Demo(tree, test));

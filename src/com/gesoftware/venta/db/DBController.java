@@ -19,7 +19,7 @@ public abstract class DBController<T> {
     protected DBController(final DBConnection connection) {
         m_Connection = connection;
 
-        LoggingUtility.core(getClass().getCanonicalName() + " controller initialized");
+        LoggingUtility.core(getClass().getSimpleName() + " controller initialized");
     } /* End of 'DBController::DBController' method */
 
     /* *

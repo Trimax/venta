@@ -28,21 +28,21 @@ public final class SerializationUtility {
 
             /* Object serialization */
             serializedObject = bytesArrayOutputStream.toByteArray();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LoggingUtility.exception(e);
         } finally {
             /* Close object output stream */
             try {
                 if (objectOutput != null)
                     objectOutput.close();
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 LoggingUtility.error("Error during closing object output stream: " + e.getMessage());
             }
 
             /* Close bytes output stream */
             try {
                 bytesArrayOutputStream.close();
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 LoggingUtility.error("Error during closing bytes output stream: " + e.getMessage());
             }
         }

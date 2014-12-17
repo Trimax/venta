@@ -100,4 +100,25 @@ public final class SynchronizedMap<K, V> implements Map<K, V>, Serializable {
             return new HashSet<Entry<K, V>>(m_Map.entrySet());
         }
     } /* End of 'SynchronizedMap::entrySet' method */
+
+    @Override
+    public final int hashCode() {
+        synchronized (m_Map) {
+            return m_Map.hashCode();
+        }
+    } /* End of 'SynchronizedMap::hashCode' method */
+
+    @Override
+    public final boolean equals(final Object obj) {
+        synchronized (m_Map) {
+            return obj instanceof SynchronizedMap && m_Map.equals(obj);
+        }
+    } /* End of 'SynchronizedMap::equals' method */
+
+    @Override
+    public final String toString() {
+        synchronized (m_Map) {
+            return m_Map.toString();
+        }
+    } /* End of 'SynchronizedMap::toString' method */
 } /* End of 'SynchronizedMap' class */

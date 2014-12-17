@@ -28,9 +28,9 @@ public final class HashUtility {
      * AUTHOR: Eliseev Dmitry
      * */
     private static String convertToHex(final byte[] data) {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
 
-        for (byte aData : data) {
+        for (final byte aData : data) {
             int halfByte = (aData >>> 4) & 0x0F;
             int twoParts = 0;
             do {
@@ -53,11 +53,9 @@ public final class HashUtility {
      * AUTHOR: Eliseev Dmitry
      * */
     private static String getHash(final String text) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-        MessageDigest md;
-        md = MessageDigest.getInstance("SHA-1");
+        final MessageDigest md = MessageDigest.getInstance("SHA-1");
         md.update(text.getBytes("UTF-8"), 0, text.length());
-        byte[] sha1hash = md.digest();
-        return convertToHex(sha1hash);
+        return convertToHex(md.digest());
     } /* End of 'HashUtility::getHash' method */
 
     /* *
@@ -69,9 +67,9 @@ public final class HashUtility {
     public static String generateHash(final String string) {
         try {
             return getHash(string);
-        } catch (NoSuchAlgorithmException e) {
+        } catch (final NoSuchAlgorithmException e) {
             LoggingUtility.error("Can't calculate hash by string: " + string);
-        } catch (UnsupportedEncodingException e) {
+        } catch (final UnsupportedEncodingException e) {
             LoggingUtility.error("Can't calculate hash by string: " + string);
         }
 

@@ -1,6 +1,6 @@
 package com.gesoftware.venta.math.trees;
 
-import com.gesoftware.venta.math.shapes.Rectangle;
+import com.gesoftware.venta.math.shapes.Box2r;
 import com.gesoftware.venta.math.vectors.Vec2r;
 
 import java.io.Serializable;
@@ -10,8 +10,8 @@ import java.util.List;
 /**
  * Quad tree class definition
  **/
-public final class QuadTree<T extends Rectangle> implements Serializable {
-    private final Rectangle m_Bounds;
+public final class QuadTree<T extends Box2r> implements Serializable {
+    private final Box2r m_Bounds;
     private final List<T> m_Objects;
 
     private QuadTree<T> m_ChildNW;
@@ -27,7 +27,7 @@ public final class QuadTree<T extends Rectangle> implements Serializable {
      *  PARAM: [IN] area - quad tree covering region
      * AUTHOR: Eliseev Dmitry
      * */
-    public QuadTree(final Rectangle area) {
+    public QuadTree(final Box2r area) {
         m_Objects = new ArrayList<T>();
         m_Bounds  = area;
     } /* End of 'QuadTree::QuadTree' method */
@@ -81,35 +81,42 @@ public final class QuadTree<T extends Rectangle> implements Serializable {
         int y = (int) m_Bounds.getPosition().getY();
 
         /* Create child nodes */
-        m_ChildNE = new QuadTree<T>(new Rectangle(x + subWidth, y, subWidth, subHeight));
-        m_ChildNW = new QuadTree<T>(new Rectangle(x, y, subWidth, subHeight));
-        m_ChildSW = new QuadTree<T>(new Rectangle(x, y + subHeight, subWidth, subHeight));
-        m_ChildSE = new QuadTree<T>(new Rectangle(x + subWidth, y + subHeight, subWidth, subHeight));
+        m_ChildNE = new QuadTree<T>(new Box2r(x + subWidth, y, subWidth, subHeight));
+        m_ChildNW = new QuadTree<T>(new Box2r(x, y, subWidth, subHeight));
+        m_ChildSW = new QuadTree<T>(new Box2r(x, y + subHeight, subWidth, subHeight));
+        m_ChildSE = new QuadTree<T>(new Box2r(x + subWidth, y + subHeight, subWidth, subHeight));
     } /* End of 'QuadTree::split' method */
 
     /* *
      * METHOD: Remove an object from tree
+     * RETURN: True if object was removed, False otherwise (object wasn't found)
      *  PARAM: [IN] object - object to remove
      * AUTHOR: Eliseev Dmitry
      * */
-    public final void remove(final T object) {
+    public final boolean remove(final T object) {
+        if (object == null)
+            return false;
+
         synchronized (m_Sync) {
             if (!m_Bounds.intersects(object))
-                return;
+                return false;
 
             /* Try to remove object */
             if (m_Objects.remove(object))
-                return;
+                return true;
 
             /* Try to remove object from children */
+            boolean result = false;
             if (m_ChildNE != null)
-                m_ChildNE.remove(object);
+                result = m_ChildNE.remove(object) || result;
             if (m_ChildNW != null)
-                m_ChildNW.remove(object);
+                result = m_ChildNW.remove(object) || result;
             if (m_ChildSE != null)
-                m_ChildSE.remove(object);
+                result = m_ChildSE.remove(object) || result;
             if (m_ChildSW != null)
-                m_ChildSW.remove(object);
+                result = m_ChildSW.remove(object) || result;
+
+            return result;
         }
     } /* End of 'QuadTree::remove' method */
 
@@ -130,6 +137,9 @@ public final class QuadTree<T extends Rectangle> implements Serializable {
      * AUTHOR: Eliseev Dmitry
      * */
     public final boolean insert(final T object) {
+        if (object == null)
+            return false;
+
         synchronized (m_Sync) {
             if (!object.inside(m_Bounds))
                 return false;
@@ -153,7 +163,10 @@ public final class QuadTree<T extends Rectangle> implements Serializable {
      *  PARAM: [IN] area              - area to check intersections with
      * AUTHOR: Eliseev Dmitry
      * */
-    private List<T> retrieve(final List<T> intersectedObjects, final Rectangle area) {
+    private List<T> retrieve(final List<T> intersectedObjects, final Box2r area) {
+        if (area == null)
+            return intersectedObjects;
+
         if (!m_Bounds.intersects(area))
             return intersectedObjects;
 
@@ -182,7 +195,7 @@ public final class QuadTree<T extends Rectangle> implements Serializable {
      *  PARAM: [IN] area - area to check intersections with
      * AUTHOR: Eliseev Dmitry
      * */
-    public final List<T> retrieve(final Rectangle area) {
+    public final List<T> retrieve(final Box2r area) {
         synchronized (m_Sync) {
             return retrieve(new ArrayList<T>(), area);
         }
@@ -194,8 +207,8 @@ public final class QuadTree<T extends Rectangle> implements Serializable {
      * AUTHOR: Eliseev Dmitry
      * */
     public final List<T> getAll() {
-        return retrieve(new Rectangle(0, 0, m_Bounds.getSize().getX(), m_Bounds.getSize().getY()));
-    }
+        return retrieve(new Box2r(0, 0, m_Bounds.getSize().getX(), m_Bounds.getSize().getY()));
+    } /* End of 'QuadTree:getAll' method */
 
     /* *
      * METHOD: Determines if given area has intersections with at least one object, stored at tree
@@ -203,7 +216,10 @@ public final class QuadTree<T extends Rectangle> implements Serializable {
      *  PARAM: [IN] area - area to check intersections with
      * AUTHOR: Eliseev Dmitry
      * */
-    public final boolean hasIntersections(final Rectangle area) {
+    public final boolean hasIntersections(final Box2r area) {
+        if (area == null)
+            return false;
+
         synchronized (m_Sync) {
             if (!m_Bounds.intersects(area))
                 return false;
@@ -228,6 +244,9 @@ public final class QuadTree<T extends Rectangle> implements Serializable {
      * AUTHOR: Eliseev Dmitry
      * */
     public final T getObject(final Vec2r position) {
+        if (position == null)
+            return null;
+
         synchronized (m_Sync) {
             if (!m_Bounds.contains(position))
                 return null;

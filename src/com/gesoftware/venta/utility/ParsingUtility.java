@@ -83,4 +83,17 @@ public final class ParsingUtility {
 
         return (Date)object;
     } /* End of 'ParsingUtility::toDate' method */
+
+    /* *
+     * METHOD: Converts an object to enum if possible
+     * RETURN: Enum object representation
+     *  PARAM: [IN] object - object to convert
+     * AUTHOR: Eliseev Dmitry
+     * */
+    public static <T extends Enum<T>> T toEnum(final String value, final Class<T> enumClass) {
+        if (ValidationUtility.isEmpty(value))
+            return null;
+
+        return Enum.valueOf(enumClass, value);
+    } /* End of 'ParsingUtility::toEnum' method */
 } /* End of 'ParsingUtility' class */

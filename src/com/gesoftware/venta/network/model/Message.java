@@ -115,7 +115,7 @@ public final class Message implements Serializable {
     } /* End of 'Message::getTimestamp' method */
 
     @Override
-    public final boolean equals(Object obj) {
+    public final boolean equals(final Object obj) {
         return obj instanceof Message && messagesAreEqual((Message) obj);
     } /* End of 'Message::equals' method */
 

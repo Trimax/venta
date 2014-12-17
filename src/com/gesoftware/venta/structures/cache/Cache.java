@@ -7,8 +7,8 @@ import java.io.Serializable;
 /**
  * Cache class definition
  **/
-public abstract class Cache<T> implements Serializable {
-    private final SynchronizedMap<Integer, T> m_Items = new SynchronizedMap<Integer, T>();
+public abstract class Cache<K, V> implements Serializable {
+    private final SynchronizedMap<K, V> m_Items = new SynchronizedMap<K, V>();
 
     /* *
      * METHOD: Gets item from cache if cached, load to cache otherwise
@@ -16,7 +16,7 @@ public abstract class Cache<T> implements Serializable {
      *  PARAM: [IN] key - item key
      * AUTHOR: Dmitry Eliseev
      * */
-    public final T get(final Integer key) {
+    public final V get(final K key) {
         synchronized (m_Items) {
             if (!m_Items.containsKey(key))
                 m_Items.put(key, cacheItem(key));
@@ -48,5 +48,5 @@ public abstract class Cache<T> implements Serializable {
      *  PARAM: [IN] key - item key
      * AUTHOR: Dmitry Eliseev
      * */
-    protected abstract T cacheItem(final Integer key);
+    protected abstract V cacheItem(final K key);
 } /* End of 'Cache' class */

@@ -303,7 +303,7 @@ public final class Server implements IServer {
          *  PARAM: [IN] message - reference to message to send
          * AUTHOR: Eliseev Dmitry
          * */
-        public final synchronized boolean send(Message message) {
+        public final synchronized boolean send(final Message message) {
             try {
                 m_Messages.put(message);
 
@@ -332,7 +332,7 @@ public final class Server implements IServer {
         } /* End of 'Client::getID' method */
 
         @Override
-        public final boolean equals(Object o) {
+        public final boolean equals(final Object o) {
             return o instanceof Client && ((Client) o).getID().equals(m_ID);
         } /* End of 'Client::equals' method */
 
@@ -409,16 +409,28 @@ public final class Server implements IServer {
 
     /* *
      * METHOD: Sends a message to client
+     * RETURN: True if success, false otherwise
      *  PARAM: [IN] clientID - client identifier
      *  PARAM: [IN] message  - message to send
      * AUTHOR: Eliseev Dmitry
      * */
-    private synchronized boolean send(final String clientID, final Message message) {
+    public final boolean send(final String clientID, final Message message) {
         LoggingUtility.debug("Sending " + message.getSize() + " bytes to client...");
 
         final Client client = m_Clients.get(clientID);
         return client != null && client.send(message);
     } /* End of 'Server::send' method */
+
+    /* *
+     * METHOD: Disconnects client by it's hash
+     *  PARAM: [IN] clientID - client identifier
+     * AUTHOR: Eliseev Dmitry
+     * */
+    public final void disconnect(final String clientID) {
+        final Client client = m_Clients.get(clientID);
+        if (client != null)
+            client.disconnect();
+    } /* End of 'Server::disconnect' method */
 
     /* *
      * METHOD: Processes server handler response
